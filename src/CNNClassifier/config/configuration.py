@@ -4,7 +4,7 @@ from src.CNNClassifier.logger import logging
 from src.CNNClassifier.utils import *
 from src.CNNClassifier.exception import ClassificationException
 from src.CNNClassifier.entity.config_entity import (
-    DataIngestionConfig , PrepareBaseModelConfig 
+    DataIngestionConfig , PrepareBaseModelConfig ,TrainingConfig
 )
 
 class ConfigurationManager():
@@ -62,3 +62,22 @@ class ConfigurationManager():
         except Exception as e:
             raise ClassificationException(e, sys) from e 
         
+        
+    def get_model_training_config(self)-> TrainingConfig:
+        try:
+            config = self.config[TRAINING]
+            params = self.params
+            training_config = TrainingConfig(
+                 root_dir= config.ROOT_DIR ,
+                 trained_model_path=  config.TRAINED_MODEL_PATH ,
+                 updated_base_model_path= config.UPDATED_BASE_MODEL_PATh ,
+                 training_data= config.TRAINING_DATA ,
+                 params_epochs= params.EPOCHS,
+                 params_batch_size= params.BATCH_SIZE,
+                 params_is_augmentation= params.AUGMENTATION,
+                 params_image_size= params.IMAGE_SIZE
+             )
+            print(training_config)
+            return training_config
+        except Exception as e:
+            raise ClassificationException(e, sys) from e 

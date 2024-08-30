@@ -5,7 +5,7 @@ from src.CNNClassifier.config.configuration import ConfigurationManager
 
 from src.CNNClassifier.components.data_ingestion import DataIngestion 
 from src.CNNClassifier.components.prepare_base_model import PreparepareBaseModel
-
+from src.CNNClassifier.components.model_training import ModelTrainer
 
 import os ,sys
 import pandas as pd
@@ -43,12 +43,26 @@ class TrainPipeline():
     
         except Exception as e:
             raise e 
-    
+    def start_model_training(self):
+        try:
+            training_pipeline_config = self.config.get_model_training_config() 
+ 
+            model_trainer = ModelTrainer(
+                config= training_pipeline_config
+            )
+            model_trainer.get_base_model()
+            model_trainer.train_valid_generator()
+            model_trainer.train(
+            )
+            
+        except Exception as e:
+            raise e 
     
     def run_pipeline(self):
         try:
-            data_ingestion_artifacts = self.start_data_ingestion() 
-            prepare_base_model_artifacts = self.start_prepare_base_model()
+        #     data_ingestion_artifacts = self.start_data_ingestion() 
+        #     prepare_base_model_artifacts = self.start_prepare_base_model()
+            start_model_trainer = self.start_model_training()
         except Exception as e:
             raise e 
         
