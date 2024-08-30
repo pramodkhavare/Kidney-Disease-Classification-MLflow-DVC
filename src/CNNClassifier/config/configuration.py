@@ -4,25 +4,25 @@ from src.CNNClassifier.logger import logging
 from src.CNNClassifier.utils import *
 from src.CNNClassifier.exception import ClassificationException
 from src.CNNClassifier.entity.config_entity import (
-    DataIngestionConfig , DataValidationConfig , DataTransformationConfig ,ModelEvaluationConfig ,ModelTrainerConfig
+    DataIngestionConfig , PrepareBaseModelConfig 
 )
 
 class ConfigurationManager():
     def __init__(self ,
                  config_file_path =CONFIG_FILE_PATH,
-                #  params_file_path =PARAMS_FILE_PATH,
+                 params_file_path =PARAMS_FILE_PATH,
                  schema_file_path = SCHEMA_FILE_PATH,
                  current_time_stamp =CURRENT_TIME_STAMP):
         try:
             self.config_file_path = config_file_path 
-            # self.params_file_path = params_file_path
+            self.params_file_path = params_file_path
             self.schema_file_path = schema_file_path
             self.current_time_stamp = current_time_stamp
             
             
             self.config = read_yaml(self.config_file_path)
             self.schema = read_yaml(self.schema_file_path)
-            # self.params = read_yaml(self.params_file_path)
+            self.params = read_yaml(self.params_file_path)
             
              
             create_directories([self.config[ARTIFACTS_ROOT]])
@@ -45,5 +45,20 @@ class ConfigurationManager():
             raise ClassificationException(e, sys) from e 
         
         
-    def get_da
+    def get_prepare_base_model_config(self)->PrepareBaseModelConfig:
+        try:
+            config = self.config[PREPARE_BASE_MODEL]
+            params = self.params
+
+            prepare_base_model_config = PrepareBaseModelConfig(
+                root_dir=config[ROOT_DIR] ,base_model_path=config[BASE_MODEL_PATH] , updated_base_model_path= config[UPDATED_BASE_MODEL_PATh],
+                params_image_size= params.IMAGE_SIZE,
+                params_learning_rate = params.LEARNING_RATE 
+                ,params_include_top=params.INCLUDE_TOP ,
+                params_weights = params.WEIGHTS,
+                params_classes= params.CLASSES
+            ) 
+            return prepare_base_model_config
+        except Exception as e:
+            raise ClassificationException(e, sys) from e 
         

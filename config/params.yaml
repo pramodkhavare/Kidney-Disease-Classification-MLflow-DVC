@@ -1,0 +1,21 @@
+AUGMENTATION : True 
+IMAGE_SIZE : [224 ,224 ,3]  #As per VGG16 model requirements 
+BATCH_SIZE : 16 
+INCLUDE_TOP : False 
+EPOCHS : 1 
+CLASSES : 2
+WEIGHTS : imagenet 
+LEARNING_RATE : 0.01 
+
+
+
+# keras.applications.VGG16(
+#     include_top=True,
+#     weights="imagenet",
+#     input_tensor=None,
+#     input_shape=None,
+#     pooling=None,
+#     classes=1000,
+#     classifier_activation="softmax",
+#     name="vgg16",
+# )
